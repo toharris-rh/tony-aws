@@ -1,0 +1,20 @@
+# AWS specific vars
+key_name: 
+instance_type: 
+image: 
+wait: 
+group: 
+count: 
+region: 
+vpc_subnet_id: 
+assign_public_ip: yes
+alwaysup: false
+target_hostname: 
+deleteby: 
+my_email_address: 
+subnet_name: 
+
+# Satellite specific vars
+activation_key: 
+org_id: AWS
+sat6_fqdn: 

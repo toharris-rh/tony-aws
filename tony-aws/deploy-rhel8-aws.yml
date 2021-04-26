@@ -1,0 +1,100 @@
+---
+  - name: Deploying AWS instance
+    hosts: localhost
+    connection: local
+    gather_facts: no
+    vars_files:
+    - group_vars/all
+
+    tasks:
+    - name: Creating {{target_hostname}} on AWS in the {{region}} region
+      ec2:
+        key_name: "{{key_name}}"
+        instance_type: "{{instance_type}}"
+        image:  "{{image}}"
+        wait: "{{wait}}"
+        group: "{{group}}"
+        wait_timeout: 503
+        count: "{{count}}"
+        region: "{{region}}"
+        vpc_subnet_id:  "{{vpc_subnet_id}}"
+        assign_public_ip: "{{assign_public_ip}}"
+        instance_tags:
+          AlwaysUp: "{{alwaysup}}"
+          Name: "{{target_hostname}}"
+          Contact: "{{my_email_address}}"
+          DeleteBy: "{{deleteby}}"
+      register: ec2
+
+    - name: Waiting for SSH to come up on {{ target_hostname }}
+      wait_for:
+        host: "{{ item.public_dns_name }}"
+        port: 22
+        delay: 30
+        timeout: 600
+      with_items: "{{ ec2.instances }}"
+
+    - name: Add hosts to in memory inventory
+      add_host:
+        name: "{{ item.public_dns_name }}"
+        ansible_host: "{{ item.public_dns_name }}"
+        ansible_user: ec2-user
+        groups: newhosts
+      with_items:
+      - "{{ ec2.instances }}"
+
+  - name: Configuring hostname for {{ target_hostname }}
+    hosts: newhosts
+    gather_facts: no
+    become: true
+    tasks:
+    - name: Waiting for system to come up
+      pause:
+        seconds: 30
+    - name: Setting hostname to {{ target_hostname }}
+      ansible.builtin.hostname:
+        name: "{{ target_hostname }}"
+
+  - name: Joining Satellite and Applying Updates
+    hosts: newhosts
+    become: true
+    tasks:
+    - name: Installing katello-ca-consumer-latest.noarch.rpm from {{ sat6_fqdn }}
+      yum:
+        name: http://{{ sat6_fqdn }}/pub/katello-ca-consumer-latest.noarch.rpm
+        state: present
+
+    - name: Registering {{ target_hostname }} to Satellite {{ sat6_fqdn }}
+      redhat_subscription:
+        state: present
+        activationkey: "{{ activation_key }}"
+        org_id: "{{ org_id }}"
+
+    - name: Applying updates via YUM
+      yum:
+        name: "*"
+        state: latest
+
+    - name: Checking if a reboot is required
+      shell: needs-restarting -r
+      failed_when: false
+      register: reboot_required
+      changed_when: false
+
+    - name: Rebooting {{ target_hostname }} because RC returned is {{ reboot_required.rc }}
+      shell: sleep 3; reboot
+      ignore_errors: true
+      changed_when: false
+      async: 1
+      poll: 0
+      when: reboot_required.rc != 0
+
+    - name: Waiting for the server to come back online
+      wait_for_connection:
+        timeout: 600
+        delay: 20
+      register: reboot_results
+
+    - name: Finishing up
+      debug:
+        msg: "{{ target_hostname }} rebooted in {{ reboot_results.elapsed }} seconds."
