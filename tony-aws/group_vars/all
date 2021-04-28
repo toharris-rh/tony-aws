@@ -7,7 +7,7 @@ group:
 count: 
 region: 
 vpc_subnet_id: 
-assign_public_ip: yes
+assign_public_ip: 
 alwaysup: false
 target_hostname: 
 deleteby: 
