@@ -48,9 +48,6 @@
     gather_facts: no
     become: true
     tasks:
-    - name: Waiting for system to come up
-      pause:
-        seconds: 30
     - name: Setting hostname to {{ target_hostname }}
       ansible.builtin.hostname:
         name: "{{ target_hostname }}"
