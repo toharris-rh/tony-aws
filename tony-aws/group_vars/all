@@ -16,5 +16,5 @@ subnet_name:
 
 # Satellite specific vars
 activation_key: 
-org_id: AWS
+org_id: 
 sat6_fqdn: 
