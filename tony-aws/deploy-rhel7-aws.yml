@@ -1,0 +1,27 @@
+---
+  - name: Deploying AWS instance
+    hosts: localhost
+    connection: local
+    gather_facts: no
+    vars_files:
+    - group_vars/all
+
+    tasks:
+    - name: Creating {{target_hostname}} on AWS in the {{region}} region
+      ec2:
+        key_name: "{{key_name}}"
+        instance_type: "{{instance_type}}"
+        image:  "{{image}}"
+        wait: "{{wait}}"
+        group: "{{group}}"
+        wait_timeout: 503
+        count: "{{count}}"
+        region: "{{region}}"
+        vpc_subnet_id:  "{{vpc_subnet_id}}"
+        assign_public_ip: "{{assign_public_ip}}"
+        instance_tags:
+          AlwaysUp: "{{alwaysup}}"
+          Name: "{{target_hostname}}"
+          Contact: "{{my_email_address}}"
+          DeleteBy: "{{deleteby}}"
+      register: ec2
