@@ -1,0 +1,3 @@
+[submodule "tony-aws/tony-aws/role-satellite6-server"]
+	path = tony-aws/tony-aws/role-satellite6-server
+	url = https://github.com/RedHatSatellite/role-satellite6-server.git
