@@ -1,0 +1,5 @@
+---
+- Name: Deploying Satellite 
+  hosts: all
+  roles:
+    - { role: role-satellite6-server rhn_user: {{ my-rhn-username }} rhn_password: {{ my-rhn-password}} }
