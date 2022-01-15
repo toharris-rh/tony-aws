@@ -1,5 +1,5 @@
 ---
-- Name: Deploying Satellite 
+- name: Deploying Satellite
   hosts: all
   roles:
-    - role: role-satellite6-server  
+    - role: role-satellite6-server
