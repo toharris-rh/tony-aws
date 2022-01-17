@@ -8,18 +8,18 @@
 
     tasks:
     - name: Creating {{target_hostname}} on AWS in the {{region}} region
-      ec2:
+      amazon.aws.ec2_instance:
+        name: "{{ target_hostname}}"
         key_name: "{{key_name}}"
         instance_type: "{{instance_type}}"
-        image:  "{{image}}"
-        wait: "{{wait}}"
-        group: "{{group}}"
+        image_id:  "{{image}}"
+        security_group: "{{group}}"
         wait_timeout: 503
-        count: "{{count}}"
-        region: "{{region}}"
+        ec2_region: "{{region}}"
         vpc_subnet_id:  "{{vpc_subnet_id}}"
-        assign_public_ip: "{{assign_public_ip}}"
-        instance_tags:
+        network:
+          assign_public_ip: "{{assign_public_ip}}"
+        tags:
           AlwaysUp: "{{alwaysup}}"
           Name: "{{target_hostname}}"
           Contact: "{{my_email_address}}"
