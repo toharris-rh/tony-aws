@@ -26,7 +26,7 @@
           DeleteBy: "{{deleteby}}"
       register: ec2
 
-    - name: Waiting for SSH to come up on {{ target_hostname }}
+    - name: "Waiting for SSH to come up on {{ item.public_dns_name }}"
       wait_for:
         host: "{{ item.public_dns_name }}"
         port: 22
