@@ -26,7 +26,11 @@
           DeleteBy: "{{deleteby}}"
       register: ec2
 
-    - name: "Waiting for SSH to come up on {{ target_hostname }}"
+    - name: Add delay for Amazon to update public_dns_name
+      wait_for:
+        timeout: 120
+
+    - name: Checking for SSH on {{ target_hostname }}
       wait_for:
         host: "{{ item.public_dns_name }}"
         port: 22
