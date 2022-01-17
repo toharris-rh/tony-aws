@@ -6,8 +6,8 @@
   - name: Fail if OS is not RHEL
     assert: { that: "ansible_distribution == 'RedHat'" } 
 
-  - name: Fail if OS is not RHEL 6.5 or higher
-    assert: { that: "ansible_distribution_version >= 6.5" } 
+#  - name: Fail if OS is not RHEL 6.5 or higher
+#    assert: { that: "ansible_distribution_version >= 6.5" } 
   
   - name: Check for Katello already installed
     command: "rpm -q katello"
