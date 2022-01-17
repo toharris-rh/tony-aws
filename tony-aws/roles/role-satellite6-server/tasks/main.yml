@@ -54,7 +54,8 @@
   ## which was merged 2015-08-24. If your version of Ansible is older, you'll need to identify 
   ## your subscription pool ids and pass those to the role instead. 
   - name: Enable RHEL subscription via username/password
-    community.general.redhat_subscription: 
+    #    community.general.redhat_subscription: 
+    community.general.rhn_register:
       state: present 
       username: "{{ rhn_user }}"
       password: "{{ rhn_pass }}"
@@ -62,7 +63,8 @@
     when: rhn_user is defined and rhn_pass is defined
 
   - name: Enable RHEL subscription via activation key
-    community.general.redhat_subscription: 
+    community.general.rhn_register:
+            #    community.general.redhat_subscription: 
       state: present 
       activationkey: "{{ rhn_activationkey }}"
       pool: ".*Red Hat (Enterprise Linux|Satellite).*"
