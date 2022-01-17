@@ -1,5 +1,7 @@
 ---
 - name: Deploying Satellite
   hosts: all
+  collections:
+    - community.general
   roles:
     - role: role-satellite6-server
