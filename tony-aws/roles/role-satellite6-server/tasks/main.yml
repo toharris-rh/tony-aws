@@ -55,11 +55,13 @@
   ## your subscription pool ids and pass those to the role instead. 
   - name: Enable RHEL subscription via username/password
     #    community.general.redhat_subscription: 
-    community.general.rhn_register:
-      state: present 
-      username: "{{ rhn_user }}"
-      password: "{{ rhn_pass }}"
-      pool: ".*Red Hat (Enterprise Linux|Satellite).*"
+#    community.general.rhn_register:
+#      state: present 
+#      username: "{{ rhn_user }}"
+#      password: "{{ rhn_pass }}"
+#      pool: ".*Red Hat (Enterprise Linux|Satellite).*"
+    shell:
+      cmd: "subscription-manager register --username {{rhn_user}} --password {{rhn_pass}}"
     when: rhn_user is defined and rhn_pass is defined
 
   - name: Enable RHEL subscription via activation key
