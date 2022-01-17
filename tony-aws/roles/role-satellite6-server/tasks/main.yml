@@ -64,13 +64,13 @@
       cmd: "subscription-manager register --username {{rhn_user}} --password {{rhn_pass}}"
     when: rhn_user is defined and rhn_pass is defined
 
-  - name: Enable RHEL subscription via activation key
-    community.general.rhn_register:
+#  - name: Enable RHEL subscription via activation key
+#    community.general.rhn_register:
             #    community.general.redhat_subscription: 
-      state: present 
-      activationkey: "{{ rhn_activationkey }}"
-      pool: ".*Red Hat (Enterprise Linux|Satellite).*"
-    when: rhn_activation_key is defined
+#      state: present 
+#      activationkey: "{{ rhn_activationkey }}"
+#      pool: ".*Red Hat (Enterprise Linux|Satellite).*"
+#    when: rhn_activation_key is defined
 
   - name: Add subs by pool id if your version of Ansible has a buggy community.general.redhat_subscription module
     command: "subscription-manager subscribe --pool={{ item }}"
