@@ -14,7 +14,8 @@
         instance_type: "{{instance_type}}"
         image_id:  "{{image}}"
         security_group: "{{group}}"
-        wait_timeout: 503
+        wait: yes
+        wait_timeout: 300
         ec2_region: "{{region}}"
         vpc_subnet_id:  "{{vpc_subnet_id}}"
         network:
