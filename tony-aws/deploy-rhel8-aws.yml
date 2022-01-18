@@ -15,7 +15,7 @@
         image_id:  "{{image}}"
         security_group: "{{group}}"
         wait: yes
-        wait_timeout: 300
+        wait_timeout: 500
         ec2_region: "{{region}}"
         vpc_subnet_id:  "{{vpc_subnet_id}}"
         network:
@@ -25,16 +25,17 @@
           Name: "{{target_hostname}}"
           Contact: "{{my_email_address}}"
           DeleteBy: "{{deleteby}}"
+        state: running
       register: ec2
 
-      #    - name: Add delay for Amazon to update public_dns_name
-      #      wait_for:
-      #        timeout: 300
+    - name: Add delay for Amazon to update public_dns_name
+      wait_for:
+        timeout: 60
 
     - name: Add hosts to in memory inventory
       add_host:
-        name: "{{ item.private_dns_name }}"
-        ansible_host: "{{ item.private_dns_name }}"
+        name: "{{ item.public_dns_name }}"
+        ansible_host: "{{ item.public_dns_name }}"
         ansible_user: ec2-user
         groups: newhosts
       with_items:
