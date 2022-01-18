@@ -28,16 +28,7 @@
 
     - name: Add delay for Amazon to update public_dns_name
       wait_for:
-        timeout: 120
-
-    - name: Checking for SSH on {{ target_hostname }}
-      wait_for:
-        host: "{{ item.public_dns_name }}"
-        port: 22
-        delay: 30
         timeout: 300
-      with_items: "{{ ec2.instances }}"
-      failed_when: never
 
     - name: Add hosts to in memory inventory
       add_host:
