@@ -58,7 +58,7 @@
       yum:
         name: http://{{ sat6_fqdn }}/pub/katello-ca-consumer-latest.noarch.rpm
         state: present
-        gpgcheck: no
+        disable_gpg_check: true
 
     - name: Registering {{ target_hostname }} to Satellite {{ sat6_fqdn }}
       redhat_subscription:
