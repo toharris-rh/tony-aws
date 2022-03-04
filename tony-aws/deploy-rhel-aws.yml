@@ -46,7 +46,7 @@
         name: "{{ target_hostname }}"
         ansible_host: "{{ item.public_dns_name }}"
         ansible_user: ec2-user
-        groups: aws_group
+        groups: "Opentlc Hosts"
       with_items:
       - "{{ ec2.instances }}"
 
