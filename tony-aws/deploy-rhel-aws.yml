@@ -42,6 +42,7 @@
       - "{{ ec2.instances }}"
 
     - name: Add host to in static inventory
+      become: true
       awx.awx.host:
         inventory: "Opentlc Hosts" 
         name: "{{ target_hostname }}" 
