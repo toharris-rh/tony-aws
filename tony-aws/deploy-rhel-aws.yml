@@ -46,7 +46,6 @@
         inventory: "Opentlc Hosts" 
         name: "{{ target_hostname }}" 
         state: present
-        controller_config_file: "~/tower_cli.cfg"
         variables:
           ansible_host: "{{ item.public_dns_name }}"
           ansible_user: ec2-user
