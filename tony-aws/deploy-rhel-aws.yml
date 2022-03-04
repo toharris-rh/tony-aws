@@ -48,7 +48,7 @@
         record: "{{ target_hostname }}"
         type: A
         ttl: 7200
-        value: "{{ item.public_ip }}"
+        value: "{{ item.public_ip_address }}"
       with_items:
       - "{{ ec2.instances }}"
 
