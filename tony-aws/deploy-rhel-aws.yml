@@ -30,7 +30,7 @@
 
     - name: Add delay for Amazon to update public_dns_name
       wait_for:
-        timeout: 180
+        timeout: 30
 
     - name: Add host to in memory inventory
       add_host:
