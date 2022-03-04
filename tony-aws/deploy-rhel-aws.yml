@@ -41,6 +41,17 @@
       with_items:
       - "{{ ec2.instances }}"
 
+    - name: Add DNS entry to Route53
+      community.aws.route53:
+        state: present
+        zone: "{{ aws_domain }}"
+        record: "{{ target_hostname }}"
+        type: A
+        ttl: 7200
+        value: "{{ item.public_ip }}"
+      with_items:
+      - "{{ ec2.instances }}"
+
   - name: Update static inventory
     hosts: "{{ tower_fqdn }}"
     tasks:
@@ -52,10 +63,7 @@
         state: present
         controller_config_file: "~/.tower_cli.cfg"
         variables:
-          ansible_host: "{{ item.public_dns_name }}"
           ansible_user: ec2-user
-      with_items:
-      - "{{ ec2.instances }}"
 
   - name: Configuring hostname for {{ target_hostname }}
     hosts: newhosts
