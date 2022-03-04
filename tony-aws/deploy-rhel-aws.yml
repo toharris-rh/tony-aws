@@ -41,6 +41,9 @@
       with_items:
       - "{{ ec2.instances }}"
 
+  - name: Update static inventory
+    hosts: toharris-aap-01.sandbox1017.opentlc.com
+    tasks:
     - name: Add host to in static inventory
       become: true
       awx.awx.host:
