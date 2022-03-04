@@ -1,0 +1,45 @@
+---
+  - name: Joining Satellite and Applying Updates
+    hosts: "{{ target_hostname }}"
+    become: true
+    tasks:
+    - name: Installing katello-ca-consumer-latest.noarch.rpm from {{ sat6_fqdn }} on {{ target_hostname }}
+      yum:
+        name: http://{{ sat6_fqdn }}/pub/katello-ca-consumer-latest.noarch.rpm
+        state: present
+        disable_gpg_check: true
+
+    - name: Registering {{ target_hostname }} to {{ sat6_fqdn }}
+      redhat_subscription:
+        state: present
+        activationkey: "{{ activation_key }}"
+        org_id: "{{ org_id }}"
+
+    - name: Applying updates via YUM
+      yum:
+        name: "*"
+        state: latest
+
+    - name: Checking if a reboot is required
+      shell: needs-restarting -r
+      failed_when: false
+      register: reboot_required
+      changed_when: false
+
+    - name: Rebooting {{ target_hostname }} because RC returned is {{ reboot_required.rc }}
+      shell: sleep 3; reboot
+      ignore_errors: true
+      changed_when: false
+      async: 1
+      poll: 0
+
+    - name: Waiting for the server to come back online
+      wait_for_connection:
+        timeout: 600
+        delay: 20
+      register: reboot_results
+
+    - name: Finishing up
+      debug:
+        msg: "{{ target_hostname }} rebooted in {{ reboot_results.elapsed }} seconds."
+
