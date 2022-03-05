@@ -20,6 +20,8 @@
       changed_when: false
       async: 1
       poll: 0
+      when: reboot_required.rc != 0
+
 
     - name: Waiting for the server to come back online
       wait_for_connection:
