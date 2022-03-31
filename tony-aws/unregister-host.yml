@@ -1,0 +1,16 @@
+---
+  - name: Unregistering {{ target_hostname }} from Satellite and Insights
+    hosts: "{{ target_hostname }}"
+    become: true
+
+    tasks:
+    - name: Unregister {{ target_hostname }} from Insights
+      shell: insights-client  --unregister
+      ignore_errors: yes
+
+    - name: Unregistering {{ target_hostname }} from {{ sat6_fqdn }}
+      redhat_subscription:
+        state: absent
+        activationkey: "{{ activation_key }}"
+        org_id: "{{ org_id }}"
+
