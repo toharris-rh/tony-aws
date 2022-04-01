@@ -1,0 +1,23 @@
+---
+  - name: Stopping AWS instances based on wildcard
+    hosts: localhost
+    connection: local
+    gather_facts: no
+    vars_files:
+    - group_vars/all
+
+    tasks:
+    - name: List several EC2 instances according to their name tag
+      ec2_instance_info:
+        ec2_region: "{{region}}"
+        filters:
+          "tag:Name": "{{ wildcard_hostname }}"
+      register: ec2
+
+    - name: Stop instance
+      amazon.aws.ec2_instance:
+        region: "{{region}}"
+        state: 'stopped'
+        instance_ids: "{{ item.instance_id }}"
+      with_items: "{{ ec2.instances }}"
+
