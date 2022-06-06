@@ -28,6 +28,7 @@
         timeout: 600
         delay: 20
       register: reboot_results
+      when: reboot_required.rc != 0
 
     - name: Finishing up
       debug:
