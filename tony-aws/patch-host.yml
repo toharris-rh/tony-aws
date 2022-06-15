@@ -33,3 +33,4 @@
     - name: Finishing up
       debug:
         msg: "{{ target_hostname }} rebooted in {{ reboot_results.elapsed }} seconds."
+      when: reboot_required.rc != 0
