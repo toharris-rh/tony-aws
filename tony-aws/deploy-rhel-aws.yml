@@ -64,16 +64,15 @@
         #        controller_config_file: "~/.tower_cli.cfg"
         #        variables:
         #          ansible_user: ec2-user
-  - name: Waiting for SSH to come up on {{ target_hostname }}
-    hosts: localhost
-    tasks:
+    - name: Waiting for SSH to come up on {{ target_hostname }}
       wait_for:
         host: "{{ item.public_dns_name }}"
         port: 22
         delay: 15
         timeout: 320
         state: started
-      with_items: "{{ ec2.instances }}"
+      with_items: 
+      - "{{ ec2.instances }}"
 
   - name: Configuring hostname for {{ target_hostname }}
     hosts: newhosts
