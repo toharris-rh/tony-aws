@@ -52,18 +52,28 @@
       with_items:
       - "{{ ec2.instances }}"
 
-  - name: Update static inventory
-    hosts: "{{ tower_fqdn }}"
+        #  - name: Update static inventory
+        #    hosts: "{{ tower_fqdn }}"
+        #    tasks:
+        #    - name: Add host to in static inventory
+        #      become: true
+        #      awx.awx.host:
+        #        inventory: "Opentlc Hosts" 
+        #        name: "{{ target_hostname }}" 
+        #        state: present
+        #        controller_config_file: "~/.tower_cli.cfg"
+        #        variables:
+        #          ansible_user: ec2-user
+  - name: Waiting for SSH to come up on {{ target_hostname }}
+    hosts: localhost
     tasks:
-    - name: Add host to in static inventory
-      become: true
-      awx.awx.host:
-        inventory: "Opentlc Hosts" 
-        name: "{{ target_hostname }}" 
-        state: present
-        controller_config_file: "~/.tower_cli.cfg"
-        variables:
-          ansible_user: ec2-user
+      wait_for:
+        host: "{{ item.public_dns_name }}"
+        port: 22
+        delay: 15
+        timeout: 320
+        state: started
+      with_items: "{{ ec2.instances }}"
 
   - name: Configuring hostname for {{ target_hostname }}
     hosts: newhosts
