@@ -18,5 +18,5 @@
     - name: Installing Satellite key for remote execution
       ansible.posix.authorized_key:
         user: ec2-user
-        key: "{{ lookup('url', 'https://toharris-satellite.sandbox1238.opentlc.com:9090/ssh/pubkey', validate_certs=False, split_lines=False) }}"
+        key: "{{ lookup('url', 'https://{{ sat6_fqdn}}:9090/ssh/pubkey', validate_certs=False, split_lines=False) }}"
         state: present
