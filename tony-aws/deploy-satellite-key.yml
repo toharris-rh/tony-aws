@@ -5,6 +5,5 @@
     - name: Ensuring the key exists
       ansible.posix.authorized_key:
         user: ec2-user
-        key: "{{ lookup('url', 'https://toharris-satellite.sandbox1238.opentlc.com:9090/ssh/pubkey', split_lines=False) }}"
+        key: "{{ lookup('url', 'https://toharris-satellite.sandbox1238.opentlc.com:9090/ssh/pubkey', split_lines=False, validate_certs=False) }}"
         state: present
-        validate_certs: False
