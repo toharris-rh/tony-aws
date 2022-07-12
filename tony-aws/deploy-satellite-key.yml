@@ -1,0 +1,9 @@
+---
+- name: Deploying Satellite Key for Remote Execution
+  hosts: all
+  tasks:
+    - name: Ensuring the key exists
+      ansible.posix.authorized_key:
+        user: ec2-user
+        key: "{{ lookup('url', 'https://toharris-satellite.sandbox1238.opentlc.com:9090/ssh/pubkey', split_lines=False) }}"
+        state: present
