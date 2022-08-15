@@ -1,0 +1,21 @@
+---
+  - name: Restarting AWS instance
+    hosts: localhost
+    connection: local
+    gather_facts: no
+    vars_files:
+    - group_vars/all
+
+    tasks:
+    - name: List several EC2 instances according to their name tag
+      ec2_instance_info:
+        ec2_region: "{{region}}"
+        filters:
+          "tag:Name": "{{ target_hostname }}"
+      register: ec2
+
+    - name: Restart instance
+      amazon.aws.ec2_instance:
+        region: "{{region}}"
+        state: 'restarted'
+        instance_ids: '{{ ec2.instances[0].instance_id }}'
