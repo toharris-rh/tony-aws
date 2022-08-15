@@ -1,6 +1,6 @@
 ---
   - name: Pinging {{ hosts }} for test
-    hosts: "{{ target_hostname }}"
+    hosts: all
     tasks:
     - name: Running ansible ping module
       ansible.builtin.ping:
