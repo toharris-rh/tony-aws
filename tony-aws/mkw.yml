@@ -1,0 +1,29 @@
+---
+  - name: Deploying AWS instance
+    hosts: localhost
+    connection: local
+    gather_facts: no
+    vars_files:
+    - group_vars/all
+
+    tasks:
+    - name: Creating {{target_hostname}} on AWS in the {{region}} region
+      amazon.aws.ec2_instance:
+        name: mkw-rhel-demo1.sandbox1601.opentlc.com
+        key_name: "{{key_name}}"
+        instance_type: "{{instance_type}}"
+        image_id:  "{{image}}"
+        security_group: "{{group}}"
+        wait: yes
+        wait_timeout: 500
+        ec2_region: "{{region}}"
+        vpc_subnet_id:  "{{vpc_subnet_id}}"
+        network:
+          assign_public_ip: "{{assign_public_ip}}"
+        tags:
+          AlwaysUp: "{{alwaysup}}"
+          Name: "{{target_hostname}}"
+          Contact: "{{my_email_address}}"
+          DeleteBy: "{{deleteby}}"
+        state: running
+      register: ec2
