@@ -16,7 +16,7 @@
         security_group: "{{group}}"
         wait: yes
         wait_timeout: 500
-        ec2_region: "{{region}}"
+        region: "{{region}}"
         vpc_subnet_id:  "{{vpc_subnet_id}}"
         network:
           assign_public_ip: "{{assign_public_ip}}"
