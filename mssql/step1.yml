@@ -4,7 +4,7 @@
     mssql_accept_microsoft_cli_utilities_for_sql_server_eula: true
     mssql_accept_microsoft_sql_server_standard_eula: true
     mssql_manage_firewall: true
-    mssql_password: "RedH@123!"
+    mssql_password: "{{ sql_password }}"
     mssql_edition: Developer
     mssql_version: 2022
     mssql_tls_enable: true
@@ -14,7 +14,7 @@
         ca: self-sign
     mssql_tls_version: 1.2
     mssql_tls_force: false
-    mssql_ha_db_name: ExampleDB
+    mssql_ha_db_name: "{{ sql_dbname }}"
     __mssql_test_db_name: "{{ mssql_ha_db_name }}"
     mssql_debug: true
   tasks:
