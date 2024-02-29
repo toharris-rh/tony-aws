@@ -10,10 +10,10 @@
 # get data on the current content-view
     - name: "Gather Data For Current Content-View From Satellite"
       redhat.satellite.resource_info:
-#        username: "{{ satellite.satellite_user}}"
-#        password: "{{ satellite.satellite_password }}"
-#        server_url: "{{ satellite.satellite_url }}"
-#        organization: "{{ organization.key }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        server_url: "{{ server_url }}"
+        organization: "{{ organization }}"
         resource: content_views
         search: name = "{{ content_view }}"
         validate_certs: False
@@ -23,6 +23,10 @@
 # get data on the current content-view version
     - name: "Gather Data For Current Content-View Versions From Satellite"
       redhat.satellite.resource_info:
+        username: "{{ username }}"
+        password: "{{ password }}"
+        server_url: "{{ server_url }}"
+        organization: "{{ organization }}"
  #       username: "{{ satellite.satellite_user}}"
  #       password: "{{ satellite.satellite_password }}"
  #       server_url: "{{ satellite.satellite_url }}"
@@ -65,22 +69,30 @@
 # only publish new view if necessary (when the current view is at or above library)
     - name: "Publish new version of Content-View"
       redhat.satellite.content_view_version:
+        username: "{{ username }}"
+        password: "{{ password }}"
+        server_url: "{{ server_url }}"
+        organization: "{{ organization }}"
 #        username: "{{ satellite.satellite_user}}"
 #        password: "{{ satellite.satellite_password }}"
 #        server_url: "{{ satellite.satellite_url }}"
 #        organization: "{{ organization.key }}"
-#        content_view: "{{ content_view }}"
+        content_view: "{{ content_view }}"
       when: highest_version | int >= environments.Library | int or publish_only | default(False)
 
 
 # only promote environments defined in the vars
     - name: "Promote Environments to Version N+1"
       redhat.satellite.content_view_version:
+        username: "{{ username }}"
+        password: "{{ password }}"
+        server_url: "{{ server_url }}"
+        organization: "{{ organization }}"
 #        username: "{{ satellite.satellite_user}}"
 #        password: "{{ satellite.satellite_password }}"
 #        server_url: "{{ satellite.satellite_url }}"
 #        organization: "{{ organization.key }}"
-#        content_view: "{{ content_view }}"
+        content_view: "{{ content_view }}"
     # dictionaries aren't order and Satellite doesn't want you promoting things out of order
     # but we're promoting them all so we just override that behavior
         force_promote: yes
