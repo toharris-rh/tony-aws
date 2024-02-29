@@ -2,6 +2,11 @@
   - name: Promoting content-view
     hosts: all
     tasks:
+
+
+    - name: Debug stuff
+      ansible.builtin.debug:
+        var: username
 # get data on the current content-view
     - name: "Gather Data For Current Content-View From Satellite"
       redhat.satellite.resource_info:
