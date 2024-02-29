@@ -6,3 +6,4 @@ collections:
 - name: awx.awx
 - name: ansible.posix
 - name: microsoft.sql
+- name: redhat.satellite
