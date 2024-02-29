@@ -1,5 +1,5 @@
 ---
-  - name: Promoting {{ organization.key }} for {{ content-view }}
+  - name: Promoting content-view
     hosts: all
     tasks:
 # get data on the current content-view
@@ -8,7 +8,7 @@
 #        username: "{{ satellite.satellite_user}}"
 #        password: "{{ satellite.satellite_password }}"
 #        server_url: "{{ satellite.satellite_url }}"
-        organization: "{{ organization.key }}"
+#        organization: "{{ organization.key }}"
         resource: content_views
         search: name = "{{ content_view }}"
         validate_certs: False
@@ -21,7 +21,7 @@
  #       username: "{{ satellite.satellite_user}}"
  #       password: "{{ satellite.satellite_password }}"
  #       server_url: "{{ satellite.satellite_url }}"
-        organization: "{{ organization.key }}"
+ #       organization: "{{ organization.key }}"
         resource: content_view_versions
         params:
           content_view_id: "{{ content_view_data.resources[0].id }}"
@@ -63,8 +63,8 @@
 #        username: "{{ satellite.satellite_user}}"
 #        password: "{{ satellite.satellite_password }}"
 #        server_url: "{{ satellite.satellite_url }}"
-        organization: "{{ organization.key }}"
-        content_view: "{{ content_view }}"
+#        organization: "{{ organization.key }}"
+#        content_view: "{{ content_view }}"
       when: highest_version | int >= environments.Library | int or publish_only | default(False)
 
 
@@ -74,8 +74,8 @@
 #        username: "{{ satellite.satellite_user}}"
 #        password: "{{ satellite.satellite_password }}"
 #        server_url: "{{ satellite.satellite_url }}"
-        organization: "{{ organization.key }}"
-        content_view: "{{ content_view }}"
+#        organization: "{{ organization.key }}"
+#        content_view: "{{ content_view }}"
     # dictionaries aren't order and Satellite doesn't want you promoting things out of order
     # but we're promoting them all so we just override that behavior
         force_promote: yes
