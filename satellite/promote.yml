@@ -34,6 +34,7 @@
         resource: content_view_versions
         params:
           content_view_id: "{{ content_view_data.resources[0].id }}"
+        validate_certs: False
       register: version_information
 
 # creates a dictionary with data formatted as such {'Prod':'11.0'}
@@ -78,6 +79,7 @@
 #        server_url: "{{ satellite.satellite_url }}"
 #        organization: "{{ organization.key }}"
         content_view: "{{ content_view }}"
+        validate_certs: False
       when: highest_version | int >= environments.Library | int or publish_only | default(False)
 
 
@@ -98,5 +100,6 @@
         force_promote: yes
         lifecycle_environments: "{{ item.key }}"
         version: "{{ item.value }}"
+        validate_certs: False
       with_dict: "{{ new_environments }}"
       when: item.key in organization.value.lifecycle_environments and not publish_only | default(False)
