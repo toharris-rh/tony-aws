@@ -102,4 +102,4 @@
         version: "{{ item.value }}"
         validate_certs: False
       with_dict: "{{ new_environments }}"
-      when: item.key in organization.value.lifecycle_environments and not publish_only | default(False)
+      when: item.key in lifecycle_env and not publish_only | default(False)
