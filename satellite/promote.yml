@@ -4,9 +4,6 @@
     tasks:
 
 
-    - name: Debug stuff
-      ansible.builtin.debug:
-        var: username
 # get data on the current content-view
     - name: "Gather Data For Current Content-View From Satellite"
       redhat.satellite.resource_info:
@@ -27,10 +24,6 @@
         password: "{{ password }}"
         server_url: "{{ server_url }}"
         organization: "{{ organization }}"
- #       username: "{{ satellite.satellite_user}}"
- #       password: "{{ satellite.satellite_password }}"
- #       server_url: "{{ satellite.satellite_url }}"
- #       organization: "{{ organization.key }}"
         resource: content_view_versions
         params:
           content_view_id: "{{ content_view_data.resources[0].id }}"
@@ -74,10 +67,6 @@
         password: "{{ password }}"
         server_url: "{{ server_url }}"
         organization: "{{ organization }}"
-#        username: "{{ satellite.satellite_user}}"
-#        password: "{{ satellite.satellite_password }}"
-#        server_url: "{{ satellite.satellite_url }}"
-#        organization: "{{ organization.key }}"
         content_view: "{{ content_view }}"
         validate_certs: False
       when: highest_version | int >= environments.Library | int or publish_only | default(False)
@@ -90,10 +79,6 @@
         password: "{{ password }}"
         server_url: "{{ server_url }}"
         organization: "{{ organization }}"
-#        username: "{{ satellite.satellite_user}}"
-#        password: "{{ satellite.satellite_password }}"
-#        server_url: "{{ satellite.satellite_url }}"
-#        organization: "{{ organization.key }}"
         content_view: "{{ content_view }}"
     # dictionaries aren't order and Satellite doesn't want you promoting things out of order
     # but we're promoting them all so we just override that behavior
