@@ -1,0 +1,32 @@
+---
+  - name: Running playbook to reboot servers as needed
+    hosts: all
+    become: true
+    tasks:
+
+    - name: Checking if a reboot is required
+      shell: needs-restarting -r
+      failed_when: false
+      register: reboot_required
+      changed_when: false
+
+    - name: Rebooting {{ ansible_hostname }} because RC returned is {{ reboot_required.rc }}
+      shell: sleep 3; reboot
+      ignore_errors: true
+      changed_when: false
+      async: 1
+      poll: 0
+      when: reboot_required.rc != 0
+
+
+    - name: Waiting for the server to come back online
+      wait_for_connection:
+        timeout: 600
+        delay: 20
+      register: reboot_results
+      when: reboot_required.rc != 0
+
+    - name: Finishing up
+      debug:
+        msg: "{{ ansible_hostname }} rebooted in {{ reboot_results.elapsed }} seconds."
+      when: reboot_required.rc != 0
