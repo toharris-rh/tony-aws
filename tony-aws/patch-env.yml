@@ -30,7 +30,7 @@
       register: reboot_results
       when: reboot_required.rc != 0
 
-    - name: Finishing up
+    - name: Reboot Complete
       debug:
         msg: "{{ ansible_hostname }} rebooted in {{ reboot_results.elapsed }} seconds."
       when: reboot_required.rc != 0
