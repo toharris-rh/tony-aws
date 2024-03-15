@@ -1,5 +1,5 @@
 ---
-  - name: Patching hosts with all available updates
+  - name: Updating hosts with the latest available packages
     hosts: all
     become: true
     tasks:
@@ -8,29 +8,30 @@
         name: "*"
         state: latest
 
-    - name: Checking if a reboot is required
-      shell: needs-restarting -r
-      failed_when: false
-      register: reboot_required
-      changed_when: false
+###    Moved reboot function to its own task
+#    - name: Checking if a reboot is required
+#      shell: needs-restarting -r
+#      failed_when: false
+#      register: reboot_required
+#      changed_when: false
 
-    - name: Rebooting {{ ansible_hostname }} because RC returned is {{ reboot_required.rc }}
-      shell: sleep 3; reboot
-      ignore_errors: true
-      changed_when: false
-      async: 1
-      poll: 0
-      when: reboot_required.rc != 0
+#    - name: Rebooting {{ ansible_hostname }} because RC returned is {{ reboot_required.rc }}
+#      shell: sleep 3; reboot
+#      ignore_errors: true
+#      changed_when: false
+#      async: 1
+#      poll: 0
+#      when: reboot_required.rc != 0
 
 
-    - name: Waiting for {{ ansible_hostname }} to come back online
-      wait_for_connection:
-        timeout: 600
-        delay: 20
-      register: reboot_results
-      when: reboot_required.rc != 0
+#    - name: Waiting for {{ ansible_hostname }} to come back online
+#      wait_for_connection:
+#        timeout: 600
+#        delay: 20
+#      register: reboot_results
+#      when: reboot_required.rc != 0
 
-    - name: Reboot Complete
-      debug:
-        msg: "{{ ansible_hostname }} rebooted in {{ reboot_results.elapsed }} seconds."
-      when: reboot_required.rc != 0
+#    - name: Reboot Complete
+#      debug:
+#        msg: "{{ ansible_hostname }} rebooted in {{ reboot_results.elapsed }} seconds."
+#      when: reboot_required.rc != 0
