@@ -7,3 +7,5 @@ collections:
 - name: ansible.posix
 - name: microsoft.sql
 - name: redhat.satellite
+- name: infra.lvm_snapshots
+
